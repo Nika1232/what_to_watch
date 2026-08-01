@@ -7,6 +7,7 @@ from .models import Opinion
 
 @app.route('/')
 def index_view():
+    """."""
     quantity = Opinion.query.count()
     if not quantity:
         abort(500)
@@ -17,6 +18,7 @@ def index_view():
 
 @app.route('/add', methods=['GET', 'POST'])
 def add_opinion_view():
+    """."""
     form = OpinionForm()
     if form.validate_on_submit():
         text = form.text.data
@@ -24,8 +26,8 @@ def add_opinion_view():
             flash('Такое мнение уже было оставлено ранее!')
             return render_template('add_opinion.html', form=form)
         opinion = Opinion(
-            title=form.title.data, 
-            text=text, 
+            title=form.title.data,
+            text=text,
             source=form.source.data
         )
         db.session.add(opinion)
@@ -36,5 +38,6 @@ def add_opinion_view():
 
 @app.route('/opinion/<int:id>')
 def opinion_view(id):
+    """."""
     opinion = Opinion.query.get_or_404(id)
     return render_template('opinion.html', opinion=opinion)

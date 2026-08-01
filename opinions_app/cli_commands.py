@@ -3,6 +3,7 @@ import csv
 from . import db, app
 from .models import Opinion
 
+
 @app.cli.command('load_opinions')
 def load_opinions():
     """Функция загрузки мнений в базу данных."""

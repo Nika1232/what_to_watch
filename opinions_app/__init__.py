@@ -1,3 +1,4 @@
+from . import models, views, error_handler, cli_commands
 from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
@@ -11,4 +12,3 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 # Импортируем остальные модули, чтобы зарегистрировать маршруты, обработчики и команды
-from . import models, views, error_handler, cli_commands
