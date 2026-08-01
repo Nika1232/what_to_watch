@@ -1,3 +1,4 @@
+"""."""
 from . import db, app
 from .views import render_template
 

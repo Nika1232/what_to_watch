@@ -1,16 +1,14 @@
-# what_to_watch/opinions_app.py
-
+"""."""
+from wtforms.validators import DataRequired, Length, Optional
+from wtforms import StringField, SubmitField, TextAreaField, URLField
+from flask_wtf import FlaskForm
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from flask import Flask, abort, flash, redirect, render_template, url_for
 import csv
+import click
 from datetime import datetime
 from random import randrange
-
-import click
-from flask import Flask, abort, flash, redirect, render_template, url_for
-from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
-from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, URLField
-from wtforms.validators import DataRequired, Length, Optional
 
 app = Flask(__name__)
 
@@ -23,6 +21,8 @@ migrate = Migrate(app, db)
 
 
 class Opinion(db.Model):
+    """."""
+
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(128), nullable=False)
     text = db.Column(db.Text, unique=True, nullable=False)
@@ -32,6 +32,8 @@ class Opinion(db.Model):
 
 
 class OpinionForm(FlaskForm):
+    """."""
+
     title = StringField(
         'Введите название фильма',
         validators=[DataRequired(message='Обязательное поле'),
@@ -50,6 +52,7 @@ class OpinionForm(FlaskForm):
 
 @app.route('/')
 def index_view():
+    """."""
     quantity = Opinion.query.count()
     if not quantity:
         abort(500)
@@ -60,6 +63,7 @@ def index_view():
 
 @app.route('/add', methods=['GET', 'POST'])
 def add_opinion_view():
+    """."""
     form = OpinionForm()
     if form.validate_on_submit():
         text = form.text.data
@@ -79,17 +83,20 @@ def add_opinion_view():
 
 @app.route('/opinion/<int:id>')
 def opinion_view(id):
+    """."""
     opinion = Opinion.query.get_or_404(id)
     return render_template('opinion.html', opinion=opinion)
 
 
 @app.errorhandler(404)
 def page_not_found(error):
+    """."""
     return render_template('404.html'), 404
 
 
 @app.errorhandler(500)
 def internal_error(error):
+    """."""
     db.session.rollback()
     return render_template('500.html'), 500
 
